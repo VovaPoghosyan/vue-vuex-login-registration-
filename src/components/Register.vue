@@ -5,7 +5,6 @@
         <md-card-header>
           <div class="md-title">Registration</div>
         </md-card-header>
-
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
@@ -33,8 +32,8 @@
                 <label for="gender">Gender</label>
                 <md-select name="gender" id="gender" v-model="form.gender" md-dense :disabled="sending">
                   <md-option></md-option>
-                  <md-option value="M">M</md-option>
-                  <md-option value="F">F</md-option>
+                  <md-option value="M">Mail</md-option>
+                  <md-option value="F">Famail</md-option>
                 </md-select>
                 <span class="md-error">The gender is required</span>
               </md-field>
@@ -122,11 +121,7 @@
         email: {
           required,
           email
-        },
-        password: {
-          required,
-          minLength: minLength(6)
-        },
+        }
       }
     },
     methods: {
@@ -153,17 +148,70 @@
 
         // Instead of this timeout, here you can call your API
         window.setTimeout(() => {
-          this.lastUser = `${this.form.firstName} ${this.form.lastName}`
-          this.userSaved = true
-          this.sending = false
-          this.clearForm()
-        }, 1500)
+          this.lastUser  = `${this.form.firstName} ${this.form.lastName}`;
+          this.userSaved = true;
+          this.sending   = false;
+          let row = {
+            firstName: this.form.firstName,
+            lastName: this.form.lastName,
+            email: this.form.email,
+            gender: this.form.gender,
+            age: this.form.age
+          };
+          this.$store.commit('addRow', row);
+          this.clearForm();
+        }, 1000)
       },
-      validateUser () {
-        this.$v.$touch()
+      editUserData (id) {
+        this.sending = true
+
+        // Instead of this timeout, here you can call your API
+        window.setTimeout(() => {
+          this.lastUser  = `${this.form.firstName} ${this.form.lastName}`;
+          this.userSaved = true;
+          this.sending   = false;
+          let data = {
+            row: {
+              firstName: this.form.firstName,
+              lastName: this.form.lastName,
+              email: this.form.email,
+              gender: this.form.gender,
+              age: this.form.age
+            },
+            id: id
+          }
+          this.$store.commit('editRow', data, id);
+          this.clearForm();
+          this.editUser = false;
+          this.userId   = null;
+        }, 1000)
+      },
+      validateUser (id = null) {
+        this.$v.$touch();
 
         if (!this.$v.$invalid) {
-          this.saveUser()
+          if(this.editUser){
+            this.editUserData(id);
+          } else {
+            this.saveUser();
+          }
+        }
+      },
+      editRow (id) {
+        this.$v.$reset();
+        this.form.firstName = this.rows[id].firstName;
+        this.form.lastName  = this.rows[id].lastName;
+        this.form.age       = this.rows[id].age;
+        this.form.gender    = this.rows[id].gender;
+        this.form.email     = this.rows[id].email;
+
+        this.editUser = true;
+        this.userId   = id;
+        window.scrollTo(0, 0);
+      },
+      deleteRow (id) {
+        if(confirm("Are you sure delete this user?")){
+          this.$store.commit('deleteRow', id);
         }
       }
     }
@@ -177,11 +225,10 @@
     right: 0;
     left: 0;
   }
-  .register-card {
+  .md-card {
     margin: 0 auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  }
+  .content {
+    margin: 60px 0;
   }
 </style>

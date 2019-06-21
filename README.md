@@ -1,4 +1,4 @@
-# vue-project
+# vue vuex login registration
 
 ## Project setup
 ```

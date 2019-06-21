@@ -1,1 +1,1 @@
-# vue-vuex-login-registration-
+# vue-vuex-login-registration

@@ -57,19 +57,12 @@
             <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
           </md-field>
 
-          <!-- <md-field :class="getValidationClass('password')">
+          <md-field :class="getValidationClass('password')">
             <label for="password">Password</label>
-            <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
+            <md-input type="password" name="password" id="password" autocomplete="password" ref="password" v-model="form.password" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
             <span class="md-error" v-else-if="!$v.form.password.maxlength">The password must be at least 6 characters</span>
-          </md-field> -->
-
-          <!-- <md-field :class="getValidationClass('password')">
-            <label for="password">Password Confirmation</label>
-            <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
-            <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
-            <span class="md-error" v-else-if="!$v.form.password.maxlength">The password must be at least 6 characters</span>
-          </md-field> -->
+          </md-field>
         </md-card-content>
 
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
@@ -129,7 +122,11 @@
         email: {
           required,
           email
-        }
+        },
+        password: {
+          required,
+          minLength: minLength(6)
+        },
       }
     },
     methods: {
@@ -149,6 +146,7 @@
         this.form.age = null
         this.form.gender = null
         this.form.email = null
+        this.form.password = null
       },
       saveUser () {
         this.sending = true

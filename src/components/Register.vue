@@ -68,7 +68,10 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending">Submit</md-button>
+          <md-button type="submit" class="md-primary" :disabled="sending">Register</md-button>
+          <router-link class="md-button md-primary md-theme-default" :to="{ name: 'Login'}">
+            <a class="router-link">Login</a>
+          </router-link>
         </md-card-actions>
       </md-card>
 
@@ -130,7 +133,7 @@
         },
         password: {
           required,
-          minLength: maxLength(6)
+          minLength: minLength(6)
         },
       }
     },
@@ -169,10 +172,12 @@
               lastName: this.form.lastName,
               email: this.form.email,
               gender: this.form.gender,
-              age: this.form.age
+              age: this.form.age,
+              password: this.form.password
             };
             this.$store.commit('addUser', user);
             this.clearForm();
+            this.$router.push({ name: 'Login'});
           }, 1000)
         } 
       },

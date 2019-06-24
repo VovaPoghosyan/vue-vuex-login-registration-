@@ -45,7 +45,7 @@
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'FormValidation',
+    name: 'Login',
     mixins: [validationMixin],
     computed: {
       emailExist: function () {
@@ -101,7 +101,9 @@
               email: this.form.email,
               password: this.form.password
             };
-            if(this.$store.getters.login(user)) {
+            let userId = this.$store.getters.login(user);
+              console.log('userId', userId)
+            if(userId) {
               this.clearForm();
               this.$router.push({ name: 'Account'});
             }

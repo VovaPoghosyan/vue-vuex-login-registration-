@@ -21,6 +21,7 @@ export const store = new Vuex.Store({
     id: state => state.id,
     users: state => state.users,
     getLoginedUserData: state => {
+        console.log(state.userId);
         return state.users.find(user => user.id === state.userId);
     },
     getUserByEmail: state => email => {
@@ -31,9 +32,9 @@ export const store = new Vuex.Store({
     },
     login: state => data => {
         let user = state.users.find(user => user.email === data.email);
-        console.log(user, user.password, data.password);
+        console.log(data, 'data.id');
         if(user != undefined && user.password == data.password) {
-            state.userId = data.id;
+            state.userId = user.id;
             return true;
         } else {
             return false;

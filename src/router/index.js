@@ -7,6 +7,7 @@ import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
 import Router from 'vue-router'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Account from '@/components/Account'
 
 Vue.use(Router)
 Vue.use(MdButton)
@@ -25,6 +26,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/acount',
+      name: 'Account',
+      component: Account
     }
   ]
 })

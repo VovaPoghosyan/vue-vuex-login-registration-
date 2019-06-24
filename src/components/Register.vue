@@ -90,7 +90,7 @@
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'FormValidation',
+    name: 'Register',
     mixins: [validationMixin],
     computed: {
       emailExist: function () {

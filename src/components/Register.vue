@@ -54,6 +54,7 @@
             <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
             <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
+            <span class="md-error" v-else-if="emailExist">This email is already exists</span>
           </md-field>
 
           <md-field :class="getValidationClass('password')">
@@ -88,6 +89,11 @@
   export default {
     name: 'FormValidation',
     mixins: [validationMixin],
+    computed: {
+      emailExist: function () {
+        return this.$store.getters.emailExist(this.form.email);
+      }
+    },
     data: () => ({
       form: {
         firstName: null,
@@ -99,7 +105,7 @@
       },
       userSaved: false,
       sending: false,
-      lastUser: null
+      lastUser: null,
     }),
     validations: {
       form: {
@@ -121,16 +127,24 @@
         email: {
           required,
           email
-        }
+        },
+        password: {
+          required,
+          minLength: maxLength(6)
+        },
       }
     },
     methods: {
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
 
-        if (field) {
+        if(fieldName == "email") {
           return {
-            'md-invalid': field.$invalid && field.$dirty
+            'md-invalid': (field.$invalid && field.$dirty) || this.emailExist 
+          }
+        } else if (field) {
+          return {
+            'md-invalid': field.$invalid && field.$dirty 
           }
         }
       },
@@ -144,76 +158,31 @@
         this.form.password = null
       },
       saveUser () {
-        this.sending = true
-
-        // Instead of this timeout, here you can call your API
-        window.setTimeout(() => {
-          this.lastUser  = `${this.form.firstName} ${this.form.lastName}`;
-          this.userSaved = true;
-          this.sending   = false;
-          let row = {
-            firstName: this.form.firstName,
-            lastName: this.form.lastName,
-            email: this.form.email,
-            gender: this.form.gender,
-            age: this.form.age
-          };
-          this.$store.commit('addRow', row);
-          this.clearForm();
-        }, 1000)
-      },
-      editUserData (id) {
-        this.sending = true
-
-        // Instead of this timeout, here you can call your API
-        window.setTimeout(() => {
-          this.lastUser  = `${this.form.firstName} ${this.form.lastName}`;
-          this.userSaved = true;
-          this.sending   = false;
-          let data = {
-            row: {
+        if(!this.emailExist) {
+          this.sending = true;
+          window.setTimeout(() => {
+            this.lastUser  = `${this.form.firstName} ${this.form.lastName}`;
+            this.userSaved = true;
+            this.sending   = false;
+            let user = {
               firstName: this.form.firstName,
               lastName: this.form.lastName,
               email: this.form.email,
               gender: this.form.gender,
               age: this.form.age
-            },
-            id: id
-          }
-          this.$store.commit('editRow', data, id);
-          this.clearForm();
-          this.editUser = false;
-          this.userId   = null;
-        }, 1000)
+            };
+            this.$store.commit('addUser', user);
+            this.clearForm();
+          }, 1000)
+        } 
       },
       validateUser (id = null) {
         this.$v.$touch();
 
         if (!this.$v.$invalid) {
-          if(this.editUser){
-            this.editUserData(id);
-          } else {
-            this.saveUser();
-          }
+          this.saveUser();
         }
       },
-      editRow (id) {
-        this.$v.$reset();
-        this.form.firstName = this.rows[id].firstName;
-        this.form.lastName  = this.rows[id].lastName;
-        this.form.age       = this.rows[id].age;
-        this.form.gender    = this.rows[id].gender;
-        this.form.email     = this.rows[id].email;
-
-        this.editUser = true;
-        this.userId   = id;
-        window.scrollTo(0, 0);
-      },
-      deleteRow (id) {
-        if(confirm("Are you sure delete this user?")){
-          this.$store.commit('deleteRow', id);
-        }
-      }
     }
   }
 </script>

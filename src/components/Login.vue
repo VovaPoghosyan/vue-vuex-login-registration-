@@ -32,6 +32,9 @@
         </md-card-actions>
       </md-card>
     </form>
+    <li v-for="(value, index) in $store.getters.getLoginedUserData">
+      <h3>{{index}}: {{value}}</h3>
+    </li>
   </div>
 </template>
 

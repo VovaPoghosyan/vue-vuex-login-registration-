@@ -3,6 +3,7 @@
     <li v-for="(value, index) in $store.getters.getLoginedUserData">
       <h3>{{index}}: {{value}}</h3>
     </li>
+    <button class="md-button md-primary md-theme-default" @click.prevent="logout">Logout</button>
   </ul>
 </template>
 

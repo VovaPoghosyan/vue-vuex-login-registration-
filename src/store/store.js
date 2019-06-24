@@ -21,7 +21,6 @@ export const store = new Vuex.Store({
     id: state => state.id,
     users: state => state.users,
     getLoginedUserData: state => {
-        console.log(state.userId);
         return state.users.find(user => user.id === state.userId);
     },
     getUserByEmail: state => email => {

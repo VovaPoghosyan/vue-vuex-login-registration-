@@ -37,7 +37,6 @@ export const store = new Vuex.Store({
     },
     login: state => data => {
         let user = state.users.find(user => user.email === data.email);
-        console.log(user != undefined, user.password == data.password, user != undefined && user.password == data.password)
         if(user != undefined && user.password == data.password) {
             return {status: "success", userId: user.id};
         } else {

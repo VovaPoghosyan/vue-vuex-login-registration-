@@ -100,15 +100,15 @@
     data: () => ({
       form: {
         firstName: null,
-        lastName: null,
-        gender: null,
-        age: null,
-        email: null,
-        password: null,
+        lastName:  null,
+        gender:    null,
+        age:       null,
+        email:     null,
+        password:  null,
       },
       userSaved: false,
-      sending: false,
-      lastUser: null,
+      sending:   false,
+      lastUser:  null,
     }),
     validations: {
       form: {
@@ -154,11 +154,11 @@
       clearForm () {
         this.$v.$reset()
         this.form.firstName = null
-        this.form.lastName = null
-        this.form.age = null
-        this.form.gender = null
-        this.form.email = null
-        this.form.password = null
+        this.form.lastName  = null
+        this.form.age       = null
+        this.form.gender    = null
+        this.form.email     = null
+        this.form.password  = null
       },
       saveUser () {
         if(!this.emailExist) {
@@ -195,9 +195,9 @@
 <style lang="scss" scoped>
   .md-progress-bar {
     position: absolute;
-    top: 0;
+    top:   0;
     right: 0;
-    left: 0;
+    left:  0;
   }
   .md-card {
     margin: 0 auto;

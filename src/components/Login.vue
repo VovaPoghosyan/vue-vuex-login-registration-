@@ -45,7 +45,7 @@
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'Login',
+    name:   'Login',
     mixins: [validationMixin],
     computed: {
       emailExist: function () {
@@ -54,11 +54,11 @@
     },
     data: () => ({
       form: {
-        email: null,
+        email:    null,
         password: null,
       },
       userSaved: false,
-      sending: false,
+      sending:   false,
     }),
     validations: {
       form: {
@@ -88,7 +88,7 @@
       },
       clearForm () {
         this.$v.$reset()
-        this.form.email = null
+        this.form.email    = null
         this.form.password = null
       },
       login () {
@@ -124,9 +124,9 @@
 <style lang="scss" scoped>
   .md-progress-bar {
     position: absolute;
-    top: 0;
+    top:   0;
     right: 0;
-    left: 0;
+    left:  0;
   }
   .md-card {
     margin: 0 auto;

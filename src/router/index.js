@@ -33,4 +33,4 @@ export default new Router({
       component: Account
     }
   ]
-})
+});

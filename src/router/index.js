@@ -4,11 +4,11 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import 'vue-material/dist/vue-material.min.css'
 import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
-import Router from 'vue-router'
+import Router   from 'vue-router'
 import Register from '@/components/Register'
-import Login from '@/components/Login'
-import Account from '@/components/Account'
-import {store} from '../store/store'
+import Login    from '@/components/Login'
+import Account  from '@/components/Account'
+import {store}  from '../store/store'
 
 Vue.use(Router)
 Vue.use(MdButton)
@@ -49,7 +49,7 @@ export default new Router({
       beforeEnter: redirectIfNotAuth,
     },
     {
-      path: '/acount',
+      path: '/account',
       name: 'Account',
       component: Account,
       beforeEnter: redirectIfAuth,

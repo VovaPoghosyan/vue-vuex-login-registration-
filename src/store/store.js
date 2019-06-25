@@ -22,13 +22,24 @@ export const store = new Vuex.Store({
     logout(state) {
         state.userId = null;
     },
+    deleteAccount(state) {
+        let index = state.users.indexOf(state.users.find(user => user.id === state.userId));
+        state.users.splice(index, 1);
+        state.userId = null;
+    },
   },
   getters: {
     id: state => state.id,
     users: state => state.users,
     userId: state => state.userId,
     getLoginedUserData: state => {
-        return state.users.find(user => user.id === state.userId);
+        let data = state.users.find(user => user.id === state.userId);
+        if(data != undefined) {
+            delete data.id;
+            delete data.password;
+            data.gender = data.gender == "M" ? "Mail" : "Famail";
+        }
+        return data;
     },
     getUserByEmail: state => email => {
         return state.users.find(user => user.email === email);

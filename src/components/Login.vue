@@ -32,9 +32,6 @@
         </md-card-actions>
       </md-card>
     </form>
-    <li v-for="(value, index) in $store.getters.getLoginedUserData">
-      <h3>{{index}}: {{value}}</h3>
-    </li>
   </div>
 </template>
 
@@ -104,10 +101,10 @@
               email: this.form.email,
               password: this.form.password
             };
-            let userId = this.$store.getters.login(user);
-              console.log('userId', userId)
-            if(userId) {
+            let data = this.$store.getters.login(user);
+            if(data.status == "success") {
               this.clearForm();
+              this.$store.commit('saveUserId', data.userId);
               this.$router.push({ name: 'Account'});
             }
           }, 1000)

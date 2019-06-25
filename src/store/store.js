@@ -16,6 +16,12 @@ export const store = new Vuex.Store({
         data.id = state.id++;
         state.users.push(data);
     },
+    saveUserId(state, id) {
+        state.userId = id;
+    },
+    logout(state) {
+        state.userId = null;
+    },
   },
   getters: {
     id: state => state.id,
@@ -31,12 +37,11 @@ export const store = new Vuex.Store({
     },
     login: state => data => {
         let user = state.users.find(user => user.email === data.email);
-        console.log(data, 'data.id');
+        console.log(user != undefined, user.password == data.password, user != undefined && user.password == data.password)
         if(user != undefined && user.password == data.password) {
-            state.userId = user.id;
-            return true;
+            return {status: "success", userId: user.id};
         } else {
-            return false;
+            return {status: "fail", userId: null};
         }
     },
   }

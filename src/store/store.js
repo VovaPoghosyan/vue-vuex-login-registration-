@@ -26,6 +26,7 @@ export const store = new Vuex.Store({
   getters: {
     id: state => state.id,
     users: state => state.users,
+    userId: state => state.userId,
     getLoginedUserData: state => {
         return state.users.find(user => user.id === state.userId);
     },

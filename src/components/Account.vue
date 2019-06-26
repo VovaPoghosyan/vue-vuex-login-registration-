@@ -3,11 +3,13 @@
     <HeaderSimple></HeaderSimple>
     <div class="my-account-area">
       <div class="profile-image-area">
-        <img src="https://mrright.blob.core.windows.net/cdn/content/assets/2015-11/small/a9e417d2084e4aa1b36524ae4ba573db-%20.jpg" class="profile-img ">
+        <img :src="userData.avatar.dataUrl" v-if="userData.avatar != null" class="profile-img ">
+        <img src="../assets/avatar.jpg" v-else class="profile-img ">
       </div>
-      <div class="display-area" v-for="(value, index) in $store.getters.getLoginedUserData">
+      <div class="display-area" v-for="(value, index) in userData.info">
         <h3>{{index}}</h3>
-        <label> {{value}} </label>
+        <img :src="value" v-if="index == 'avatar'" alt="">
+        <label v-else> {{value}} </label>
       </div>
     </div>
   </div>
@@ -19,7 +21,12 @@ import HeaderSimple from '@/components/HeaderSimple'
   export default {
     name: 'Account',
     data: () => ({
+      userData: null
     }),
+    created: function () {
+      this.userData = this.$store.getters.getLoginedUserData;      
+      console.log("TCL: created---------", this.userData)
+    },
     components: {
       HeaderSimple
     },

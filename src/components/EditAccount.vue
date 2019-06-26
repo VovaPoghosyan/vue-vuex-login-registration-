@@ -64,13 +64,35 @@
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
             <span class="md-error" v-else-if="!$v.form.password.maxlength">The password must be at least 6 characters</span>
           </md-field>
-
-          <!-- <md-field :class="getValidationClass('email')">
-            <label for="avatar">Avatar</label>
-            <upload-image name="avatar" id="avatar" autocomplete="avatar" v-model="form.avatar" url=""></upload-image>
-            <span class="md-error" v-if="!$v.form.avatar.required">The avatar is required</span>
-            <span class="md-error" v-else-if="!$v.form.avatar.avatar">Invalid avatar</span>
-          </md-field> -->
+          <div class="my-8">
+            <img :src="form.avatar.dataUrl" v-if="form.avatar != null && hasImage == false" alt="">
+            <image-uploader
+              :preview="true"
+              :className="['fileinput', { 'fileinput--loaded': hasImage }]"
+              capture="environment"
+              :debug="1"
+              doNotResize="gif"
+              :autoRotate="true"
+              outputFormat="verbose"
+              @input="setImage"
+            >
+              <label for="fileInput" slot="upload-label">
+                <figure>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                  >
+                    <path class="path1"></path>
+                  </svg>
+                </figure>
+                <span class="upload-caption">{{
+                  hasImage ? "Replace" : "Click to upload"
+                }}</span>
+              </label>
+            </image-uploader>
+          </div>
         </md-card-content>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
@@ -94,7 +116,6 @@
   } from 'vuelidate/lib/validators'
 
   import HeaderSimple from '@/components/HeaderSimple'
-  import UploadImage from 'vue-upload-image';
 
   export default {
     name: 'EditAccount',
@@ -112,17 +133,21 @@
         age:       null,
         email:     null,
         password:  null,
+        avatar:    null,
       },
+      hasImage: false,
+      image: null,
       userSaved: false,
       sending:   false,
       lastUser:  null,
     }),
     components: {
-      HeaderSimple,
-      UploadImage
+      HeaderSimple
     },
     created: function () {
-      this.form = this.$store.getters.getLoginedUserData;
+      let data = this.$store.getters.getLoginedUserData;
+      this.form = data.info;
+      this.form.avatar = data.avatar;
     },
     validations: {
       form: {
@@ -173,6 +198,7 @@
         this.form.gender    = null;
         this.form.email     = null;
         this.form.password  = null;
+        this.form.avatar  = null;
       },
       saveUser () {
         if(!this.emailExist) {
@@ -187,10 +213,11 @@
               email: this.form.email,
               gender: this.form.gender,
               age: this.form.age,
-              password: this.form.password
+              password: this.form.password,
+              avatar: this.form.avatar
             };
             this.$store.commit('editUser', user);
-            this.clearForm();
+            // this.clearForm();
             this.$router.push({ name: 'Account'});
           }, 1000)
         } 
@@ -202,6 +229,11 @@
           this.saveUser();
         }
       },
+      setImage: function(output) {
+        this.hasImage = true;
+        this.image = output;
+        this.form.avatar = this.image;
+      }
     }
   }
 </script>
@@ -219,4 +251,26 @@
   .content {
     margin: 60px 0;
   }
+  #fileInput {
+  display: none;
+}
+h1,
+h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+.my-8 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
 </style>

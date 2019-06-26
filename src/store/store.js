@@ -41,11 +41,14 @@ export const store = new Vuex.Store({
         let data = state.users.find(user => user.id === state.userId);
         if(data != undefined) {
             let accaunt_data = {
-                firstName: data.firstName,
-                lastName:  data.lastName,
-                gender:    data.gender == "M" ? "Mail" : "Famail",
-                age:       data.age,
-                email:     data.email,
+                avatar: data.avatar,
+                info: {
+                    firstName: data.firstName,
+                    lastName:  data.lastName,
+                    gender:    data.gender == "M" ? "Mail" : "Famail",
+                    age:       data.age,
+                    email:     data.email,
+                }
             }
             return accaunt_data;
         }

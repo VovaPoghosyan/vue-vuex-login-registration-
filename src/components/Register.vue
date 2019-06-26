@@ -104,6 +104,7 @@
         age:       null,
         email:     null,
         password:  null,
+        avatar:    null,
       },
       userSaved: false,
       sending:   false,

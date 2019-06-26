@@ -16,6 +16,11 @@ export const store = new Vuex.Store({
         data.id = state.id++;
         state.users.push(data);
     },
+    editUser(state, data) {
+        data.id = state.userId;
+        let index = state.users.indexOf(state.users.find(user => user.id === state.userId));
+        state.users[index] = data;
+    },
     saveUserId(state, id) {
         state.userId = id;
     },
@@ -35,9 +40,14 @@ export const store = new Vuex.Store({
     getLoginedUserData: state => {
         let data = state.users.find(user => user.id === state.userId);
         if(data != undefined) {
-            delete data.id;
-            delete data.password;
-            data.gender = data.gender == "M" ? "Mail" : "Famail";
+            let accaunt_data = {
+                firstName: data.firstName,
+                lastName:  data.lastName,
+                gender:    data.gender == "M" ? "Mail" : "Famail",
+                age:       data.age,
+                email:     data.email,
+            }
+            return accaunt_data;
         }
         return data;
     },
@@ -46,6 +56,10 @@ export const store = new Vuex.Store({
     },
     emailExist: state => email => {
         return state.users.find(user => user.email === email) === undefined ? false : true;
+    },
+    emailExistEdit: state => email => {
+        let user = state.users.find(user => user.email === email);
+        return user === undefined ? false : true && user.id != state.userId;
     },
     login: state => data => {
         let user = state.users.find(user => user.email === data.email);

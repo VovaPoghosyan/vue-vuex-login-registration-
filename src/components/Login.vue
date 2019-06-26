@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeaderSimple></HeaderSimple>
     <form novalidate class="md-layout login-form" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-50 md-small-size-100 login-card">
         <md-card-header>
@@ -26,9 +27,6 @@
 
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="sending">Login</md-button>
-          <router-link class="md-button md-primary md-theme-default" :to="{ name: 'Register'}">
-            <a class="router-link">Register</a>
-          </router-link>
         </md-card-actions>
       </md-card>
     </form>
@@ -43,6 +41,7 @@
     minLength,
     maxLength
   } from 'vuelidate/lib/validators'
+  import HeaderSimple from '@/components/HeaderSimple'
 
   export default {
     name:   'Login',
@@ -60,6 +59,9 @@
       userSaved: false,
       sending:   false,
     }),
+    components: {
+      HeaderSimple
+    },
     validations: {
       form: {
         email: {

@@ -8,6 +8,7 @@ import Router   from 'vue-router'
 import Register from '@/components/Register'
 import Login    from '@/components/Login'
 import Account  from '@/components/Account'
+import EditAccount  from '@/components/EditAccount'
 import {store}  from '../store/store'
 
 Vue.use(Router)
@@ -52,6 +53,12 @@ export default new Router({
       path: '/account',
       name: 'Account',
       component: Account,
+      beforeEnter: redirectIfAuth,
+    },
+    {
+      path: '/edit',
+      name: 'EditAccount',
+      component: EditAccount,
       beforeEnter: redirectIfAuth,
     },
   ],

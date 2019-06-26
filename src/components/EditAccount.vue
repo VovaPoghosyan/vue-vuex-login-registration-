@@ -4,7 +4,7 @@
     <form novalidate class="md-layout register-form" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-50 md-small-size-100 register-card">
         <md-card-header>
-          <div class="md-title">Registration</div>
+          <div class="md-title">Edit Account</div>
         </md-card-header>
         <md-card-content>
           <div class="md-layout md-gutter">
@@ -64,12 +64,18 @@
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
             <span class="md-error" v-else-if="!$v.form.password.maxlength">The password must be at least 6 characters</span>
           </md-field>
-        </md-card-content>
 
+          <!-- <md-field :class="getValidationClass('email')">
+            <label for="avatar">Avatar</label>
+            <upload-image name="avatar" id="avatar" autocomplete="avatar" v-model="form.avatar" url=""></upload-image>
+            <span class="md-error" v-if="!$v.form.avatar.required">The avatar is required</span>
+            <span class="md-error" v-else-if="!$v.form.avatar.avatar">Invalid avatar</span>
+          </md-field> -->
+        </md-card-content>
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending">Register</md-button>
+          <md-button type="submit" class="md-primary" :disabled="sending">Edit</md-button>
         </md-card-actions>
       </md-card>
 
@@ -86,14 +92,16 @@
     minLength,
     maxLength
   } from 'vuelidate/lib/validators'
+
   import HeaderSimple from '@/components/HeaderSimple'
+  import UploadImage from 'vue-upload-image';
 
   export default {
-    name: 'Register',
+    name: 'EditAccount',
     mixins: [validationMixin],
     computed: {
       emailExist: function () {
-        return this.$store.getters.emailExist(this.form.email);
+        return this.$store.getters.emailExistEdit(this.form.email);
       }
     },
     data: () => ({
@@ -110,7 +118,11 @@
       lastUser:  null,
     }),
     components: {
-      HeaderSimple
+      HeaderSimple,
+      UploadImage
+    },
+    created: function () {
+      this.form = this.$store.getters.getLoginedUserData;
     },
     validations: {
       form: {
@@ -154,13 +166,13 @@
         }
       },
       clearForm () {
-        this.$v.$reset()
-        this.form.firstName = null
-        this.form.lastName  = null
-        this.form.age       = null
-        this.form.gender    = null
-        this.form.email     = null
-        this.form.password  = null
+        this.$v.$reset();
+        this.form.firstName = null;
+        this.form.lastName  = null;
+        this.form.age       = null;
+        this.form.gender    = null;
+        this.form.email     = null;
+        this.form.password  = null;
       },
       saveUser () {
         if(!this.emailExist) {
@@ -177,9 +189,9 @@
               age: this.form.age,
               password: this.form.password
             };
-            this.$store.commit('addUser', user);
+            this.$store.commit('editUser', user);
             this.clearForm();
-            this.$router.push({ name: 'Login'});
+            this.$router.push({ name: 'Account'});
           }, 1000)
         } 
       },

@@ -24,8 +24,7 @@ import HeaderSimple from '@/components/HeaderSimple'
       userData: null
     }),
     created: function () {
-      this.userData = this.$store.getters.getLoginedUserData;      
-      console.log("TCL: created---------", this.userData)
+      this.userData = this.$store.getters.getLoginedUserData;
     },
     components: {
       HeaderSimple

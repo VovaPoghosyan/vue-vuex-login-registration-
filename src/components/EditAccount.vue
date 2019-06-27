@@ -145,8 +145,9 @@
       HeaderSimple
     },
     created: function () {
-      let data = this.$store.getters.getLoginedUserData;
-      this.form = data.info;
+      let data         = this.$store.getters.getLoginedUserData;
+      this.form        = data.info;
+      this.form.gender = this.form.gender == "Mail" ? "M" : "F";
       this.form.avatar = data.avatar;
     },
     validations: {
